@@ -1,0 +1,25 @@
+{
+  "name": "vite-test",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@chat-ui/vue3": "^1.0.11",
+    "@types/socket.io-client": "^3.0.0",
+    "ant-design-vue": "^4.0.6",
+    "axios": "^1.6.0",
+    "element-plus": "^2.4.1",
+    "socket.io-client": "^4.7.2",
+    "vue": "^3.3.4"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.2.3",
+    "stylus": "^0.59.0",
+    "vite": "^4.4.5"
+  }
+}
