@@ -3,7 +3,7 @@
     <el-header class="header">
       <div>
         <img src="../assets/chat.png" alt="" />
-        <span>诗词生成模型</span>
+        <span class="header-content">文字生成图片</span>
       </div>
     </el-header>
     <el-card class="message-list">
@@ -20,7 +20,9 @@
                 <img class="avatar" :src="message.avatar" alt="User Avatar" />
               </div>
               <div class="message-user">{{ message.user }}:</div>
-              <div class="message-text">{{ message.text }}</div>
+              <div class="message-text">
+                <img :src="message.text" alt="Image" />
+              </div>
             </template>
             <template v-else>
               <div class="message-avatar">
@@ -46,82 +48,83 @@
   </div>
 </template>
 
-<script>
+<script setup lang="ts">
+import { ref } from "vue";
+import Img from "@/images/robot.jpg";
+import UserImg from "@/images/user.png";
+import {
+  ElCard,
+  ElScrollbar,
+  ElInput,
+  ElButton,
+  ElMessageBox,
+  ElMessage,
+} from "element-plus";
+import type { Action } from "element-plus";
 import axios from "axios";
-import Img from "../images/robot.jpg";
-import UserImg from "../images/user.png";
-export default {
-  data() {
-    return {
-      messages: [
-        { user: "小明", text: "你好啊", self: false, avatar: Img },
-        { user: "", text: "你好", self: true, avatar: UserImg },
-      ],
-      messageText: "",
-    };
+const messages = ref([
+  {
+    user: "Me",
+    self: true,
+    text: "dd",
+    avatar: UserImg,
   },
-  methods: {
-    async getBackData() {
-      var formData = new FormData();
-      formData.append("text", this.messageText);
-      var textValue = formData.get("text");
-      console.log(textValue);
-      try {
-        // 发送POST请求并携带表单数据
-        const response = await axios.post("/api/get_shici", formData);
-
-        // 处理响应结果
-        const newText = response.data["text"];
-        console.log(newText);
-        this.messages.push({
-          user: "Robot",
-          text: newText,
-          self: false,
-          avatar: Img,
-        });
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    addMessage() {
-      if (!this.messageText) return;
-      this.getBackData();
-
-      this.messages.push({
-        user: "",
-        text: this.messageText,
-        self: true,
-        avatar: UserImg,
+  { user: "XiaoMing", self: false, text: Img, avatar: Img },
+]);
+const messageText = ref("");
+const openBox = (data: string) => {
+  ElMessageBox.alert(data, "Message!", {
+    confirmButtonText: "OK",
+    callback: (action: Action) => {
+      ElMessage({
+        type: "info",
+        message: `action: ${action}`,
       });
-      this.messageText = "";
     },
-    clearMessages() {
-      this.messages = []; // Clear the messages array
-    },
-  },
+  });
+};
+
+const username = localStorage.getItem("username");
+const addMessage = () => {
+  if (messageText.value.trim() !== "") {
+    const newMessage: any = {
+      user: username,
+      self: true,
+      text: messageText.value,
+      avatar: UserImg,
+    };
+    var messageObj = {
+      username: username,
+      text: messageText.value,
+    };
+    messages.value.push(newMessage);
+    responseMessage(messageText.value, username);
+    messageText.value = "";
+  }
+};
+const responseMessage = async (message: any, username: any) => {
+  const formData = new FormData();
+  formData.append("text", message);
+  formData.append("username", username);
+  const response = await axios.post("/api/createimage", formData, {
+    responseType: "blob",
+  });
+  const blob = new Blob([response.data], { type: "image/jpeg" });
+  const blobUrl = URL.createObjectURL(blob);
+  const newMessage = {
+    user: "painting",
+    self: false,
+    text: blobUrl, // Assigning imageData to the text property
+    avatar: UserImg,
+  };
+  messages.value.push(newMessage);
+};
+const clearMessages = () => {
+  messages.value = [];
 };
 </script>
 
 <style scoped>
-.header {
-  background-color: #f5f5f5;
-  padding: 10px;
-  display: flex;
-  align-items: center;
-}
-
-.header img {
-  width: 30px;
-  height: 30px;
-  margin-right: 10px;
-}
-
-.header span {
-  font-size: 18px;
-  font-weight: bold;
-  color: darkred;
-}
-
 .chat-box {
   display: flex;
   flex-direction: column;
@@ -135,10 +138,6 @@ export default {
   padding: 10px;
 }
 
-.avatar {
-  width: 50px; /* Adjust the width as per your requirement */
-  height: 50px; /* Adjust the height as per your requirement */
-}
 .message {
   display: flex;
   margin: 4px 0;
@@ -148,11 +147,18 @@ export default {
   justify-content: flex-end;
   font-family: "Arial", sans-serif;
 }
+
 .message-text-self1 {
   color: rgb(0, 166, 255);
 }
+
 .message-text-self2 {
   color: red;
+}
+
+.avatar {
+  width: 50px; /* Adjust the width as per your requirement */
+  height: 50px; /* Adjust the height as per your requirement */
 }
 .message-content {
   display: flex;
@@ -206,5 +212,23 @@ export default {
 
 .input-box button:hover {
   background-color: #388e3c;
+}
+.header {
+  background-color: #f5f5f5;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.header img {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+}
+
+.header span {
+  font-size: 18px;
+  font-weight: bold;
+  color: darkred;
 }
 </style>

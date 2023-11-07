@@ -1,5 +1,11 @@
 <template>
   <div class="chat-box">
+    <el-header class="header">
+      <div>
+        <img src="../assets/chat.png" alt="" />
+        <span>星火API语言模型</span>
+      </div>
+    </el-header>
     <el-card class="message-list">
       <el-scrollbar>
         <div
@@ -198,5 +204,23 @@ const clearMessages = () => {
 
 .input-box button:hover {
   background-color: #388e3c;
+}
+.header {
+  background-color: #f5f5f5;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.header img {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+}
+
+.header span {
+  font-size: 18px;
+  font-weight: bold;
+  color: darkred;
 }
 </style>
