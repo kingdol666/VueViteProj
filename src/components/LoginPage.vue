@@ -35,12 +35,12 @@
       <button class="register" @click="register">注册</button>
     </div>
   </div>
-  <!-- 登录页面主体 end -->
+  <StarPage></StarPage>
 </template>
 
 <script>
 import { onMounted, reactive, toRefs, watch } from "vue";
-
+import StarPage from "../components/StarPage.vue";
 //引入路由
 import { useRouter } from "vue-router";
 import axios from "axios";
@@ -114,6 +114,7 @@ export default {
       ...toRefs(state),
       login,
       register,
+      StarPage,
     };
   },
 };
@@ -167,7 +168,7 @@ export default {
   border: 0px;
   height: 40px;
   border-radius: 10px;
-  background: rgba(0, 0, 240, 0.5);
+  background: rgba(0, 240, 84, 0.5);
   color: #ffffff;
   background-color: green;
   color: white;
@@ -184,14 +185,14 @@ export default {
 }
 .icon {
   font-size: 22px;
-  color: rgba(0, 0, 240, 0.5);
+  color: rgba(0, 240, 44, 0.5);
 }
 input {
   border: 0;
   font-size: 13px;
 }
 input::-webkit-input-placeholder {
-  color: rgba(0, 0, 240, 0.5);
+  color: rgba(0, 240, 180, 0.5);
   font-size: 13px;
 }
 input:focus {

@@ -33,12 +33,17 @@
   </div>
 </template>
 <script setup>
+import { onMounted } from "vue";
 import ImageCreate from "../components/ImageCreate.vue";
 import SideClick from "../components/SideClick.vue";
 import FileLoad from "../components/FileLoad.vue";
 import ChatDemo from "../components/chatDemo.vue";
 import ChatRobot from "../components/ChatRobot.vue";
 import HelloWorld from "../components/HelloWorld.vue";
+onMounted(() => {
+  // Initialization logic here
+  console.log("Hello World!");
+});
 </script>
 <style>
 .el-col {

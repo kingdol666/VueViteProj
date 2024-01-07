@@ -4,27 +4,26 @@ import chatToXH from "../components/ChatRobot.vue";
 import ChatToShici from "../components/HelloWorld.vue";
 import ChatDemo from "../components/chatDemo.vue";
 import ImageCreate from "../components/ImageCreate.vue";
+import StarPage from "../components/StarPage.vue";
+import LoginPlus from "../components/LoginPlus.vue";
+import TestToYuYin from "../components/TestUnit/TestToYuYin.vue";
 const routes = [
   {
     path: "/menu",
     name: "Menu",
     component: Menu,
     children: [
-      {
-        path: "/chat",
-        name: "chat",
-        component: chatToXH,
-      },
+      { path: "/chat", name: "chat", component: chatToXH },
       { path: "/shici", name: "shici", component: ChatToShici },
       { path: "/chatsocket", name: "ChatDemo", component: ChatDemo },
       { path: "/imagecreate", name: "ImageCreate", component: ImageCreate },
+      { path: "/textoyuyin", name: "TexToYuYin", component: TestToYuYin },
     ],
   },
   {
     path: "/login",
     name: "Login",
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../components/LoginPage.vue"),
+    component: StarPage,
   },
   {
     path: "/",
